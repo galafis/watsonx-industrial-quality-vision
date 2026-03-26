@@ -8,7 +8,6 @@ and inference comparison between PyTorch and ONNX outputs.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 import numpy as np
 import structlog
@@ -61,8 +60,7 @@ def export_classifier_to_onnx(
     expected_shape = (1, cfg.num_severity_levels)
     if pytorch_output.shape != expected_shape:
         raise ValueError(
-            f"Output shape mismatch: expected {expected_shape}, "
-            f"got {pytorch_output.shape}"
+            f"Output shape mismatch: expected {expected_shape}, got {pytorch_output.shape}"
         )
 
     # Dynamic axes for batch dimension

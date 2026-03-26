@@ -18,10 +18,10 @@ from src.data.preprocessing import (
     resize_with_aspect_ratio,
 )
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def sample_image_rgb() -> np.ndarray:
@@ -46,6 +46,7 @@ def square_image_rgb() -> np.ndarray:
 # ---------------------------------------------------------------------------
 # resize_with_aspect_ratio
 # ---------------------------------------------------------------------------
+
 
 class TestResizeWithAspectRatio:
     """Tests for resize_with_aspect_ratio."""
@@ -75,7 +76,7 @@ class TestResizeWithAspectRatio:
 
     def test_square_image(self, square_image_rgb: np.ndarray) -> None:
         """Square images are resized correctly."""
-        resized, scale = resize_with_aspect_ratio(square_image_rgb, max_size=320)
+        resized, _scale = resize_with_aspect_ratio(square_image_rgb, max_size=320)
         h, w = resized.shape[:2]
         assert h == 320
         assert w == 320
@@ -84,6 +85,7 @@ class TestResizeWithAspectRatio:
 # ---------------------------------------------------------------------------
 # normalize_image
 # ---------------------------------------------------------------------------
+
 
 class TestNormalizeImage:
     """Tests for normalize_image."""
@@ -123,6 +125,7 @@ class TestNormalizeImage:
 # extract_roi
 # ---------------------------------------------------------------------------
 
+
 class TestExtractROI:
     """Tests for extract_roi."""
 
@@ -156,12 +159,13 @@ class TestExtractROI:
 # preprocess_for_detection
 # ---------------------------------------------------------------------------
 
+
 class TestPreprocessForDetection:
     """Tests for preprocess_for_detection (letterbox resize)."""
 
     def test_output_shape(self, sample_image_rgb: np.ndarray) -> None:
         """Output has the target square dimensions."""
-        result, meta = preprocess_for_detection(sample_image_rgb, target_size=640)
+        result, _meta = preprocess_for_detection(sample_image_rgb, target_size=640)
         assert result.shape == (640, 640, 3)
 
     def test_metadata_keys(self, sample_image_rgb: np.ndarray) -> None:
@@ -180,7 +184,7 @@ class TestPreprocessForDetection:
 
     def test_square_image_no_padding(self, square_image_rgb: np.ndarray) -> None:
         """Square image should have zero padding."""
-        result, meta = preprocess_for_detection(square_image_rgb, target_size=640)
+        _result, meta = preprocess_for_detection(square_image_rgb, target_size=640)
         assert meta["pad_x"] == 0
         assert meta["pad_y"] == 0
 
@@ -193,6 +197,7 @@ class TestPreprocessForDetection:
 # ---------------------------------------------------------------------------
 # preprocess_for_classification
 # ---------------------------------------------------------------------------
+
 
 class TestPreprocessForClassification:
     """Tests for preprocess_for_classification."""
@@ -216,6 +221,7 @@ class TestPreprocessForClassification:
 # ---------------------------------------------------------------------------
 # map_boxes_to_original
 # ---------------------------------------------------------------------------
+
 
 class TestMapBoxesToOriginal:
     """Tests for map_boxes_to_original."""

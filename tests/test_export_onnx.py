@@ -18,10 +18,10 @@ import torch.nn as nn
 
 from src.config import ClassifierConfig, InferenceConfig
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 class _FakeClassifier(nn.Module):
     """Minimal classifier matching SeverityClassifierNet's interface."""
@@ -36,13 +36,14 @@ class _FakeClassifier(nn.Module):
     def set_eval_mode(self) -> None:
         self.train(False)
 
-    def cpu(self) -> "_FakeClassifier":
+    def cpu(self) -> _FakeClassifier:
         return super().cpu()
 
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def classifier_config() -> ClassifierConfig:
@@ -71,6 +72,7 @@ def tmp_onnx_path(tmp_path: Path) -> Path:
 # ---------------------------------------------------------------------------
 # export_classifier_to_onnx
 # ---------------------------------------------------------------------------
+
 
 class TestExportClassifierToOnnx:
     """Tests for export_classifier_to_onnx."""
@@ -199,6 +201,7 @@ class TestExportClassifierToOnnx:
 # Dynamic axes configuration
 # ---------------------------------------------------------------------------
 
+
 class TestOnnxDynamicAxes:
     """Tests for ONNX dynamic axes configuration."""
 
@@ -320,6 +323,7 @@ class TestOnnxDynamicAxes:
 # _validate_onnx_model
 # ---------------------------------------------------------------------------
 
+
 class TestValidateOnnxModel:
     """Tests for ONNX model validation."""
 
@@ -380,14 +384,13 @@ class TestValidateOnnxModel:
             from src.models.export_onnx import _validate_onnx_model
 
             with pytest.raises(ValueError, match="ONNX validation failed"):
-                _validate_onnx_model(
-                    tmp_onnx_path, dummy_input, pytorch_output, tolerance=1e-4
-                )
+                _validate_onnx_model(tmp_onnx_path, dummy_input, pytorch_output, tolerance=1e-4)
 
 
 # ---------------------------------------------------------------------------
 # export_detector_to_onnx
 # ---------------------------------------------------------------------------
+
 
 class TestExportDetectorToOnnx:
     """Tests for YOLOv8 detector ONNX export."""
@@ -406,21 +409,20 @@ class TestExportDetectorToOnnx:
         with patch.dict("sys.modules", {"ultralytics": MagicMock(YOLO=mock_yolo_cls)}):
             from src.models.export_onnx import export_detector_to_onnx
 
-            result = export_detector_to_onnx(
+            export_detector_to_onnx(
                 model_path="weights/best.pt",
                 output_path=tmp_path,
                 imgsz=640,
                 opset=17,
             )
 
-            mock_model.export.assert_called_once_with(
-                format="onnx", imgsz=640, opset=17
-            )
+            mock_model.export.assert_called_once_with(format="onnx", imgsz=640, opset=17)
 
 
 # ---------------------------------------------------------------------------
 # Integration-style tests
 # ---------------------------------------------------------------------------
+
 
 class TestOnnxExportIntegration:
     """Integration tests with real ONNX export (no torch.onnx.export mock)."""

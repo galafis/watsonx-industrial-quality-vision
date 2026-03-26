@@ -68,8 +68,12 @@ target-version = "py310"
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
-ignore = ["E501"]
+select = ["E", "F", "I", "N", "B", "SIM", "RUF"]
+ignore = ["E501", "B904", "RUF012", "N812", "N806", "SIM117"]
+
+[tool.ruff.lint.per-file-ignores]
+"notebooks/*" = ["E402", "T201", "F841"]
+"tests/*" = ["S101"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["src"]

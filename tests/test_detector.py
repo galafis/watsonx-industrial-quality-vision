@@ -6,7 +6,6 @@ during testing.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from unittest.mock import MagicMock, patch
 
 import numpy as np
@@ -16,10 +15,10 @@ import torch
 from src.config import DetectorConfig
 from src.models.detector import DefectDetector, Detection, DetectionResult
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def detector_config() -> DetectorConfig:
@@ -44,7 +43,9 @@ def _create_mock_yolo_result(
     mock_boxes = MagicMock()
 
     mock_boxes.xyxy = torch.tensor(boxes, dtype=torch.float32) if boxes else torch.zeros((0, 4))
-    mock_boxes.conf = torch.tensor(confidences, dtype=torch.float32) if confidences else torch.zeros(0)
+    mock_boxes.conf = (
+        torch.tensor(confidences, dtype=torch.float32) if confidences else torch.zeros(0)
+    )
     mock_boxes.cls = torch.tensor(class_ids, dtype=torch.float32) if class_ids else torch.zeros(0)
 
     mock_result.boxes = mock_boxes
@@ -54,6 +55,7 @@ def _create_mock_yolo_result(
 # ---------------------------------------------------------------------------
 # Detection / DetectionResult dataclasses
 # ---------------------------------------------------------------------------
+
 
 class TestDetectionDataclasses:
     """Tests for Detection and DetectionResult."""
@@ -93,6 +95,7 @@ class TestDetectionDataclasses:
 # DefectDetector initialization
 # ---------------------------------------------------------------------------
 
+
 class TestDefectDetectorInit:
     """Tests for DefectDetector initialization."""
 
@@ -127,6 +130,7 @@ class TestDefectDetectorInit:
 # DefectDetector.load
 # ---------------------------------------------------------------------------
 
+
 class TestDefectDetectorLoad:
     """Tests for loading the YOLO model."""
 
@@ -151,6 +155,7 @@ class TestDefectDetectorLoad:
 # ---------------------------------------------------------------------------
 # DefectDetector.detect
 # ---------------------------------------------------------------------------
+
 
 class TestDefectDetectorDetect:
     """Tests for defect detection inference."""
@@ -199,7 +204,9 @@ class TestDefectDetectorDetect:
         detector = DefectDetector(device="cpu")
 
         mock_result = _create_mock_yolo_result(
-            boxes=[], confidences=[], class_ids=[],
+            boxes=[],
+            confidences=[],
+            class_ids=[],
         )
         mock_model = MagicMock(return_value=[mock_result])
         detector._model = mock_model
@@ -246,6 +253,7 @@ class TestDefectDetectorDetect:
 # ---------------------------------------------------------------------------
 # DefectDetector.detect_batch
 # ---------------------------------------------------------------------------
+
 
 class TestDefectDetectorBatch:
     """Tests for batch detection."""

@@ -39,7 +39,7 @@ class DefectDataset(Dataset):
         self.transform = transform
         self.target_size = target_size
 
-        with open(annotation_path, "r", encoding="utf-8") as fh:
+        with open(annotation_path, encoding="utf-8") as fh:
             coco_data = json.load(fh)
 
         self.images: list[dict[str, Any]] = coco_data.get("images", [])
@@ -53,9 +53,7 @@ class DefectDataset(Dataset):
             self._ann_by_image.setdefault(img_id, []).append(ann)
 
         # Category id -> name mapping
-        self.cat_id_to_name: dict[int, str] = {
-            c["id"]: c["name"] for c in self.categories
-        }
+        self.cat_id_to_name: dict[int, str] = {c["id"]: c["name"] for c in self.categories}
 
         logger.info(
             "dataset_loaded",
@@ -86,9 +84,7 @@ class DefectDataset(Dataset):
         image = cv2.imread(str(img_path))
         if image is None:
             logger.warning("image_load_failed", path=str(img_path))
-            image = np.zeros(
-                (self.target_size, self.target_size, 3), dtype=np.uint8
-            )
+            image = np.zeros((self.target_size, self.target_size, 3), dtype=np.uint8)
         else:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
@@ -120,8 +116,7 @@ class DefectDataset(Dataset):
             scale_x = self.target_size / orig_w
             scale_y = self.target_size / orig_h
             boxes = [
-                [b[0] * scale_x, b[1] * scale_y, b[2] * scale_x, b[3] * scale_y]
-                for b in boxes
+                [b[0] * scale_x, b[1] * scale_y, b[2] * scale_x, b[3] * scale_y] for b in boxes
             ]
 
         # Convert to tensors

@@ -75,7 +75,7 @@ class SyntheticDefectGenerator:
         """
         patches: list[SyntheticDefect] = []
 
-        for box, label in zip(boxes, labels):
+        for box, label in zip(boxes, labels, strict=False):
             x1, y1, x2, y2 = [int(c) for c in box]
             x1, y1 = max(0, x1), max(0, y1)
             x2, y2 = min(image.shape[1], x2), min(image.shape[0], y2)
@@ -150,9 +150,7 @@ class SyntheticDefectGenerator:
         mask_float = (mask_resized / 255.0 * alpha)[..., np.newaxis]
 
         roi = bg[y : y + new_h, x : x + new_w]
-        blended = (patch_resized * mask_float + roi * (1 - mask_float)).astype(
-            np.uint8
-        )
+        blended = (patch_resized * mask_float + roi * (1 - mask_float)).astype(np.uint8)
         bg[y : y + new_h, x : x + new_w] = blended
 
         bbox = [float(x), float(y), float(x + new_w), float(y + new_h)]
@@ -193,11 +191,13 @@ class SyntheticDefectGenerator:
                 boxes.append(bbox)
                 labels.append(defect_class)
 
-            results.append({
-                "image": image,
-                "boxes": boxes,
-                "labels": labels,
-            })
+            results.append(
+                {
+                    "image": image,
+                    "boxes": boxes,
+                    "labels": labels,
+                }
+            )
 
         logger.info(
             "synthetic_batch_generated",

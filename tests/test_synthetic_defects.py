@@ -7,17 +7,16 @@ pasting, and batch generation pipeline.
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
 
 from src.data.synthetic_defects import SyntheticDefect, SyntheticDefectGenerator
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def sample_patch() -> np.ndarray:
@@ -63,6 +62,7 @@ def generator(tmp_path: Path) -> SyntheticDefectGenerator:
 # ---------------------------------------------------------------------------
 # SyntheticDefect dataclass
 # ---------------------------------------------------------------------------
+
 
 class TestSyntheticDefect:
     """Tests for the SyntheticDefect dataclass."""
@@ -111,6 +111,7 @@ class TestSyntheticDefect:
 # SyntheticDefectGenerator initialization
 # ---------------------------------------------------------------------------
 
+
 class TestSyntheticDefectGeneratorInit:
     """Tests for generator initialization."""
 
@@ -137,6 +138,7 @@ class TestSyntheticDefectGeneratorInit:
 # ---------------------------------------------------------------------------
 # extract_patches
 # ---------------------------------------------------------------------------
+
 
 class TestExtractPatches:
     """Tests for extracting defect patches from annotated images."""
@@ -237,6 +239,7 @@ class TestExtractPatches:
 # ---------------------------------------------------------------------------
 # paste_defect
 # ---------------------------------------------------------------------------
+
 
 class TestPasteDefect:
     """Tests for pasting defects onto backgrounds."""
@@ -342,6 +345,7 @@ class TestPasteDefect:
 # ---------------------------------------------------------------------------
 # generate_batch
 # ---------------------------------------------------------------------------
+
 
 class TestGenerateBatch:
     """Tests for batch synthetic defect generation."""

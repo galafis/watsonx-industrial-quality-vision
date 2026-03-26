@@ -160,9 +160,7 @@ class DefectClassifier:
         self.model = self.model.to(self.device)
         self.model.set_eval_mode()
 
-    def classify(
-        self, image: np.ndarray
-    ) -> dict[str, Any]:
+    def classify(self, image: np.ndarray) -> dict[str, Any]:
         """Classify defect severity for a single cropped defect image.
 
         Args:
@@ -175,13 +173,7 @@ class DefectClassifier:
             raise RuntimeError("Model not loaded. Call load() first.")
 
         # Convert to tensor: (H, W, C) -> (1, C, H, W)
-        tensor = (
-            torch.from_numpy(image)
-            .permute(2, 0, 1)
-            .unsqueeze(0)
-            .float()
-            .to(self.device)
-        )
+        tensor = torch.from_numpy(image).permute(2, 0, 1).unsqueeze(0).float().to(self.device)
 
         classes, probs = self.model.predict(tensor)
         class_id = int(classes[0].item())

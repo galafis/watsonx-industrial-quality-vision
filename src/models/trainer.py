@@ -12,7 +12,6 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 import structlog
 import torch
@@ -93,9 +92,7 @@ class ClassifierTrainer:
             weight_decay=self.config.weight_decay,
         )
 
-    def _build_scheduler(
-        self, optimizer: AdamW, total_steps: int
-    ) -> SequentialLR:
+    def _build_scheduler(self, optimizer: AdamW, total_steps: int) -> SequentialLR:
         """Build LR scheduler with linear warmup + cosine annealing."""
         warmup_steps = self.config.warmup_epochs
         main_steps = max(1, total_steps - warmup_steps)
@@ -114,9 +111,7 @@ class ClassifierTrainer:
             milestones=[warmup_steps],
         )
 
-    def _train_epoch(
-        self, dataloader: DataLoader, optimizer: AdamW
-    ) -> tuple[float, float]:
+    def _train_epoch(self, dataloader: DataLoader, optimizer: AdamW) -> tuple[float, float]:
         """Run a single training epoch.
 
         Returns:
@@ -205,16 +200,11 @@ class ClassifierTrainer:
             start = time.perf_counter()
 
             # Unfreeze backbone after warmup
-            if (
-                self.config.transfer_learning
-                and epoch == self.config.warmup_epochs + 1
-            ):
+            if self.config.transfer_learning and epoch == self.config.warmup_epochs + 1:
                 logger.info("phase2_full_finetune_start", epoch=epoch)
                 self.model.unfreeze_backbone()
                 optimizer = self._build_optimizer()
-                scheduler = self._build_scheduler(
-                    optimizer, self.config.epochs - epoch + 1
-                )
+                scheduler = self._build_scheduler(optimizer, self.config.epochs - epoch + 1)
 
             train_loss, train_acc = self._train_epoch(train_loader, optimizer)
             val_loss, val_acc = self._validate(val_loader)

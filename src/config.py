@@ -34,13 +34,14 @@ def _load_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         logger.warning("config_file_not_found", path=str(path))
         return {}
-    with open(path, "r", encoding="utf-8") as fh:
+    with open(path, encoding="utf-8") as fh:
         return yaml.safe_load(fh) or {}
 
 
 # ---------------------------------------------------------------------------
 # Watsonx settings
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class WatsonxSettings:
@@ -55,6 +56,7 @@ class WatsonxSettings:
 # ---------------------------------------------------------------------------
 # Model settings
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class DetectorConfig:
@@ -102,6 +104,7 @@ class TrainingConfig:
 # Augmentation settings
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class AugmentationConfig:
     """Augmentation pipeline parameters."""
@@ -123,6 +126,7 @@ class AugmentationConfig:
 # Inference settings
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class InferenceConfig:
     """Inference pipeline parameters."""
@@ -139,6 +143,7 @@ class InferenceConfig:
 # Governance settings
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class GovernanceConfig:
     """Governance and monitoring parameters."""
@@ -149,15 +154,14 @@ class GovernanceConfig:
     precision_threshold: float = 0.80
     recall_threshold: float = 0.80
     shift_window_size: int = 100
-    degradation_threshold: float = float(
-        os.getenv("SHIFT_DEGRADATION_THRESHOLD", "0.10")
-    )
+    degradation_threshold: float = float(os.getenv("SHIFT_DEGRADATION_THRESHOLD", "0.10"))
     alert_on_degradation: bool = True
 
 
 # ---------------------------------------------------------------------------
 # Aggregated configuration
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class Settings:
@@ -236,13 +240,9 @@ class Settings:
             governance=GovernanceConfig(
                 enabled=gov_cfg.get("enabled", True),
                 map_threshold=gov_cfg.get("accuracy", {}).get("map_threshold", 0.85),
-                precision_threshold=gov_cfg.get("accuracy", {}).get(
-                    "precision_threshold", 0.80
-                ),
+                precision_threshold=gov_cfg.get("accuracy", {}).get("precision_threshold", 0.80),
                 recall_threshold=gov_cfg.get("accuracy", {}).get("recall_threshold", 0.80),
-                shift_window_size=gov_cfg.get("shift_monitoring", {}).get(
-                    "window_size", 100
-                ),
+                shift_window_size=gov_cfg.get("shift_monitoring", {}).get("window_size", 100),
                 degradation_threshold=gov_cfg.get("shift_monitoring", {}).get(
                     "degradation_threshold", 0.10
                 ),

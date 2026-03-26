@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import albumentations as A
 import structlog
-from albumentations.pytorch import ToTensorV2
 
 from src.config import AugmentationConfig
 

@@ -16,10 +16,10 @@ import torch.nn as nn
 
 from src.config import ClassifierConfig
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _create_mock_backbone(num_features: int = 1408) -> MagicMock:
     """Create a mock timm backbone that returns a fixed-size feature vector."""
@@ -43,6 +43,7 @@ def _create_mock_backbone(num_features: int = 1408) -> MagicMock:
 # Fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture
 def classifier_config() -> ClassifierConfig:
     """Default classifier configuration."""
@@ -64,6 +65,7 @@ def single_input() -> torch.Tensor:
 # ---------------------------------------------------------------------------
 # SeverityClassifierNet
 # ---------------------------------------------------------------------------
+
 
 class TestSeverityClassifierNet:
     """Tests for the SeverityClassifierNet architecture."""
@@ -199,6 +201,7 @@ class TestSeverityClassifierNet:
 # ---------------------------------------------------------------------------
 # DefectClassifier wrapper
 # ---------------------------------------------------------------------------
+
 
 class TestDefectClassifier:
     """Tests for the high-level DefectClassifier wrapper."""

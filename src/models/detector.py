@@ -90,8 +90,7 @@ class DefectDetector:
             from ultralytics import YOLO
         except ImportError as exc:
             raise ImportError(
-                "ultralytics is required for YOLOv8. "
-                "Install with: pip install ultralytics"
+                "ultralytics is required for YOLOv8. Install with: pip install ultralytics"
             ) from exc
 
         if self.model_path and Path(self.model_path).exists():
@@ -139,7 +138,7 @@ class DefectDetector:
                 confs = result.boxes.conf.cpu().numpy()
                 cls_ids = result.boxes.cls.cpu().numpy().astype(int)
 
-                for box, conf, cls_id in zip(boxes, confs, cls_ids):
+                for box, conf, cls_id in zip(boxes, confs, cls_ids, strict=False):
                     class_name = (
                         self.config.classes[cls_id]
                         if cls_id < len(self.config.classes)

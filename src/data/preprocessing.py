@@ -152,9 +152,7 @@ def preprocess_for_classification(
     Returns:
         Normalized image ``(H, W, 3)`` as float32.
     """
-    resized = cv2.resize(
-        image, (target_size, target_size), interpolation=cv2.INTER_LINEAR
-    )
+    resized = cv2.resize(image, (target_size, target_size), interpolation=cv2.INTER_LINEAR)
     return normalize_image(resized)
 
 
