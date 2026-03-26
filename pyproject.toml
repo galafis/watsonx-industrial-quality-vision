@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "watsonx-industrial-quality-vision"
+version = "1.0.0"
+description = "Industrial Quality Inspection with Computer Vision powered by IBM Watsonx AI"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Gabriel Demetrios Lafis", email = "gabriel.lafis@example.com"},
+]
+keywords = [
+    "watsonx", "computer-vision", "quality-inspection", "yolov8",
+    "defect-detection", "onnx", "industrial-ai", "granite",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Manufacturing",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+
+dependencies = [
+    "ibm-watsonx-ai>=1.1.0",
+    "langchain-ibm>=0.3.0",
+    "torch>=2.1.0",
+    "torchvision>=0.16.0",
+    "ultralytics>=8.2.0",
+    "timm>=1.0.0",
+    "opencv-python-headless>=4.9.0",
+    "albumentations>=1.4.0",
+    "onnxruntime>=1.17.0",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "streamlit>=1.38.0",
+    "pillow>=10.2.0",
+    "numpy>=1.26.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.5.0",
+    "pyyaml>=6.0",
+    "structlog>=24.0.0",
+    "python-multipart>=0.0.9",
+    "httpx>=0.27.0",
+    "plotly>=5.22.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=5.0.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.6.0",
+    "mypy>=1.11.0",
+    "pre-commit>=3.8.0",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=src --cov-report=term-missing"

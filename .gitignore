@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+
+# Testing
+.coverage
+htmlcov/
+coverage.xml
+.pytest_cache/
+
+# Linting
+.ruff_cache/
+.mypy_cache/
+
+# Models (large binaries)
+models/*.pt
+models/*.onnx
+models/*.pth
+*.pt
+*.onnx
+
+# Logs
+logs/
+*.log
+
+# Data (keep structure, ignore large files)
+data/sample_images/*.jpg
+data/sample_images/*.png
+data/sample_images/*.bmp
+!data/sample_images/README.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# Jupyter
+.ipynb_checkpoints/

@@ -1,0 +1,80 @@
+# Industrial Quality Vision - Configuration
+# ==========================================
+
+model:
+  # Detection model (YOLOv8)
+  detector:
+    architecture: yolov8m
+    input_size: 640
+    confidence_threshold: 0.5
+    nms_threshold: 0.45
+    classes:
+      - scratch
+      - dent
+      - crack
+      - discoloration
+      - missing_part
+
+  # Classification model (EfficientNet)
+  classifier:
+    architecture: efficientnet_b2
+    input_size: 224
+    num_severity_levels: 4
+    severity_labels:
+      - cosmetic
+      - minor
+      - major
+      - critical
+
+  # Training
+  training:
+    epochs: 100
+    batch_size: 16
+    learning_rate: 0.001
+    weight_decay: 0.0005
+    early_stopping_patience: 15
+    lr_scheduler: cosine
+    warmup_epochs: 5
+    transfer_learning: true
+    pretrained_backbone: true
+
+augmentation:
+  # Industrial imaging augmentation pipeline
+  train:
+    horizontal_flip: 0.5
+    vertical_flip: 0.2
+    rotation_limit: 15
+    brightness_limit: 0.2
+    contrast_limit: 0.2
+    gaussian_noise_var_limit: [10.0, 50.0]
+    gaussian_blur_limit: [3, 7]
+    motion_blur_limit: 7
+    clahe_clip_limit: 4.0
+    random_shadow: 0.3
+    perspective_scale: 0.05
+  validation:
+    resize_only: true
+
+inference:
+  max_image_size: 1280
+  device: auto  # auto, cpu, cuda
+  batch_size: 1
+  onnx:
+    opset_version: 17
+    dynamic_axes: true
+    optimize: true
+
+governance:
+  enabled: true
+  log_path: ./logs/governance
+  accuracy:
+    map_threshold: 0.85
+    precision_threshold: 0.80
+    recall_threshold: 0.80
+  versioning:
+    track_metrics: [mAP, precision, recall, f1, latency_ms]
+    comparison_method: paired_t_test
+  shift_monitoring:
+    window_size: 100
+    degradation_threshold: 0.10
+    alert_on_degradation: true
