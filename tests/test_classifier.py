@@ -21,22 +21,23 @@ from src.config import ClassifierConfig
 # ---------------------------------------------------------------------------
 
 
-def _create_mock_backbone(num_features: int = 1408) -> MagicMock:
-    """Create a mock timm backbone that returns a fixed-size feature vector."""
-    backbone = MagicMock(spec=nn.Module)
-    backbone.num_features = num_features
+class _FakeBackbone(nn.Module):
+    """Lightweight real nn.Module that mimics a timm backbone for testing."""
 
-    def forward(x: torch.Tensor) -> torch.Tensor:
+    def __init__(self, num_features: int = 1408) -> None:
+        super().__init__()
+        self.num_features = num_features
+        self._pool = nn.AdaptiveAvgPool2d(1)
+        self._fc = nn.Linear(3, num_features)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         batch_size = x.shape[0]
-        return torch.randn(batch_size, num_features)
+        return torch.randn(batch_size, self.num_features)
 
-    backbone.__call__ = forward
-    backbone.forward = forward
-    backbone.parameters = MagicMock(return_value=iter([torch.randn(2, 2, requires_grad=True)]))
-    backbone.train = MagicMock(return_value=backbone)
-    backbone.eval = MagicMock(return_value=backbone)
-    backbone.to = MagicMock(return_value=backbone)
-    return backbone
+
+def _create_mock_backbone(num_features: int = 1408) -> _FakeBackbone:
+    """Create a real nn.Module backbone to avoid MagicMock/Tensor conflicts."""
+    return _FakeBackbone(num_features)
 
 
 # ---------------------------------------------------------------------------
