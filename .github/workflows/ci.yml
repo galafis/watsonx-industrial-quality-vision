@@ -43,11 +43,3 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
-
-  docker:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build Docker image
-        run: docker build -t watsonx-quality-vision:latest .
